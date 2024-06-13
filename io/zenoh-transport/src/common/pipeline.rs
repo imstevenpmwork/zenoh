@@ -178,10 +178,8 @@ impl StageIn {
 
         macro_rules! zretok {
             ($batch:expr) => {{
-                let bytes = $batch.len();
-                *c_guard = Some($batch);
-                drop(c_guard);
-                self.s_out.notify(bytes);
+                // Move out existing batch
+                self.s_out.move_batch($batch);
                 return true;
             }};
         }
